@@ -24,4 +24,17 @@ npm install
 echo "Pushing validated merge result to GitHub Enterprise validated-merge branch"
 git push -f origin HEAD:refs/heads/validated-merge
 
+if [ "${USE_CIRCLE}" = "true" ]; then
+  ./validated-merge-circle.sh
+  set +e
+  ./check-for-circle-outage.sh
+  CIRCLE_OUTAGE_OCCURRED=$?
+  set -e
+  if [ "${CIRCLE_OUTAGE_OCCURRED}" = "0" ]; then
+    ./validated-merge-jenkins.sh
+  fi
+else
+  ./validated-merge-jenkins.sh
+fi
+
 echo "Complete validated-merge.sh"
