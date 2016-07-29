@@ -50,6 +50,8 @@ dependencies:
     - npm link spark-js-sdk--test-users
     - npm link spark-js-sdk--test-users:
         pwd: packages/test-helper-test-users
+    - npm run build:
+        pwd: node_modules/lerna
   post:
     - npm run bootstrap
 
