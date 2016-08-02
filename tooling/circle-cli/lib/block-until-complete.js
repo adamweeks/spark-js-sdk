@@ -18,7 +18,7 @@ module.exports = _.curry(function blockUntilComplete(argv, ci, build) {
         str += ` (queued at ${result.usage_queued_at})`;
       }
       console.log(str);
-      if ([`pending`, `queued`, `running`].indexOf(result.status) !== -1) {
+      if ([`finished`, `not_run`].indexOf(result.lifecycle) !== -1) {
         return new Promise((resolve) => {
           setTimeout(() => resolve(blockUntilComplete(argv, ci, build)), argv.interval);
         });
