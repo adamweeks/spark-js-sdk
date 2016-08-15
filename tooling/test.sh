@@ -7,18 +7,14 @@ docker ps
 docker ps -a
 
 echo "INSTALLING LEGACY DEPENDENCIES"
-pwd
-docker run ${DOCKER_RUN_OPTS} pwd
-ls
-docker run ${DOCKER_RUN_OPTS} ls
 docker run ${DOCKER_RUN_OPTS} npm install
 
 echo "CLEANING"
 docker run ${DOCKER_RUN_OPTS} npm run grunt -- clean
 docker run ${DOCKER_RUN_OPTS} npm run grunt:concurrent -- clean
 
-rm -rf reports
-mkdir -p reports
+rm -rf ${SDK_ROOT_DIR}/reports
+mkdir -p ${SDK_ROOT_DIR}/reports/logs
 
 echo "BOOTSTRAPPING MODULES"
 docker run ${DOCKER_RUN_OPTS} npm run bootstrap
@@ -46,16 +42,16 @@ for i in ./packages/*; do
 
   PACKAGE=$(echo $i | sed -e 's/.*packages\///g')
   # Note: using & instead of -d so that wait works
-  docker run -e PACKAGE=${PACKAGE} ${DOCKER_RUN_OPTS} npm run test:package:sauce > reports/logs/${PACKAGE}.log 2>&1 &
+  docker run -e PACKAGE=${PACKAGE} ${DOCKER_RUN_OPTS} npm run test:package:sauce > ${SDK_ROOT_DIR}/reports/logs/${PACKAGE}.log 2>&1 &
   PIDS+=" $!"
 done
 
 echo "RUNNING LEGACY NODE TESTS"
-docker run ${DOCKER_RUN_OPTS} npm run test:legacy:node > reports/logs/legacy.node.log 2>&1&
+docker run ${DOCKER_RUN_OPTS} npm run test:legacy:node > ${SDK_ROOT_DIR}/reports/logs/legacy.node.log 2>&1&
 PIDS+=" $!"
 
 echo "RUNNING LEGACY BROWSER TESTS"
-docker run ${DOCKER_RUN_OPTS} npm run test:legacy:browser > reports/logs/legacy.browser.log 2>&1 &
+docker run ${DOCKER_RUN_OPTS} npm run test:legacy:browser > ${SDK_ROOT_DIR}/reports/logs/legacy.browser.log 2>&1 &
 PIDS+=" $!"
 
 FINAL_EXIT_CODE=0
