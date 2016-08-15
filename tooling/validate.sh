@@ -47,4 +47,4 @@ if [[ ${LAST_LOG} == "#release"* ]]; then
 fi
 
 echo "STORING PRMOTION SHA"
-git rev-parse HEAD > .promotion-sha
+git rev-parse HEAD > ${SDK_ROOT_DIR}./promotion-sha
