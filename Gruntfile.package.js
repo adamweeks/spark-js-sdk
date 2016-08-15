@@ -60,6 +60,7 @@ module.exports = function(grunt) {
           ];
         }()),
         options: {
+          limit: 1,
           logConcurrentOutput: true
         }
       }
@@ -278,7 +279,8 @@ module.exports = function(grunt) {
           }
         },
         src: [
-          './packages/<%= package %>/dist/**/*.js'
+          './packages/<%= package %>/dist/**/*.js',
+          '!**/*.shim.js'
         ]
       }
     },
