@@ -7,7 +7,7 @@ ps aux | grep grunt | grep -v grunt | awk '{print $2}' | xargs kill > /dev/null 
 
 # Now, fail if anything fails
 set -e
-
+set -x
 
 #
 # CONFIGURE NODE
@@ -92,12 +92,12 @@ if [ -n "${ENABLE_VERBOSE_NETWORK_LOGGING}" ]; then
   DOCKER_RUN_ENV+=" -e ENABLE_VERBOSE_NETWORK_LOGGING=${ENABLE_VERBOSE_NETWORK_LOGGING} "
 fi
 export DOCKER_CONTAINER_NAME="${JOB_NAME}-builder"
-export DOCKER_RUN_OPTS="${DOCKER_RUN_ENV} --rm --volumes-from ${HOSTNMAME} ${DOCKER_CONTAINER_NAME}"
 
 echo "WORKDIR ${WORKDIR}" >> ./docker/builder/Dockerfile
 docker build -t ${DOCKER_CONTAINER_NAME} ./docker/builder
 git checkout ./docker/builder/Dockerfile
 
+export DOCKER_RUN_OPTS="${DOCKER_RUN_ENV} --rm --volumes-from ${HOSTNAME} --user=$(id -u):$(id -g) ${DOCKER_CONTAINER_NAME}"
 
 #
 # MAKE SECRETS AVAILABLE TO AUX CONTAINERS
@@ -112,6 +112,8 @@ CISCOSPARK_CLIENT_SECRET=${CISCOSPARK_CLIENT_SECRET}
 SAUCE_USERNAME=${SAUCE_USERNAME}
 SAUCE_ACCESS_KEY=${SAUCE_ACCESS_KEY}
 EOF
+
+docker run --rm --volumes-from ${HOSTNAME} ${DOCKER_CONTAINER_NAME} rm -rf /.npm
 
 #
 # RUN THE COMMAND THAT WAS PASSED TO THIS SCRIPT
