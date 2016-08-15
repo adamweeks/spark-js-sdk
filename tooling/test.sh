@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -x
 
 START_DIR=$(pwd)
 cd "${START_DIR}/../builder"
@@ -40,7 +41,7 @@ if [ -n "${ENABLE_VERBOSE_NETWORK_LOGGING}" ]; then
   DOCKER_RUN_ENV+=" -e ENABLE_VERBOSE_NETWORK_LOGGING=${ENABLE_VERBOSE_NETWORK_LOGGING} "
 fi
 
-DOCKER_RUN_OPTS="${DOCKER_RUN_ENV} -it --rm -v $(pwd):/workspace spark-js-sdk-builder"
+DOCKER_RUN_OPTS="${DOCKER_RUN_ENV} --rm -v $(pwd):/workspace spark-js-sdk-builder"
 
 echo "INSTALLING LEGACY DEPENDENCIES"
 docker run ${DOCKER_RUN_OPTS} npm install
