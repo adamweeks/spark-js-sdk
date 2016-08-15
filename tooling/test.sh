@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -x
 
 START_DIR=$(pwd)
 cd "${START_DIR}/../builder"
