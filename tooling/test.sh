@@ -17,8 +17,8 @@ echo "CLEANING"
 docker run ${DOCKER_RUN_OPTS} npm run grunt -- clean
 docker run ${DOCKER_RUN_OPTS} npm run grunt:concurrent -- clean
 
-rm -rf reports
-mkdir -p reports
+rm -rf ${SDK_ROOT_DIR}/reports
+mkdir -p ${SDK_ROOT_DIR}/reports/logs
 
 echo "BOOTSTRAPPING MODULES"
 docker run ${DOCKER_RUN_OPTS} npm run bootstrap
