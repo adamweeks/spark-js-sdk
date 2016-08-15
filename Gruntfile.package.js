@@ -53,13 +53,14 @@ module.exports = function(grunt) {
           }
 
           return [
-            'test:automation',
-            'test:browser',
-            'test:doc',
+            // 'test:automation',
+            // 'test:browser',
+            // 'test:doc',
             'test:node'
           ];
         }()),
         options: {
+          limit: 1,
           logConcurrentOutput: true
         }
       }
