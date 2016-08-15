@@ -60,6 +60,7 @@ module.exports = function(grunt) {
           ];
         }()),
         options: {
+          limit: 1,
           logConcurrentOutput: true
         }
       }
