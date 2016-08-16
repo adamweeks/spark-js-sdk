@@ -30,7 +30,7 @@ describe('MediaCluster', function() {
 
     describe('#setFeature()', function() {
 
-      it('check media clusters present', function() {
+      it.only('check media clusters present', function() {
         return party.spock.spark.device.refresh()
           .then(function() {
             assert.notEqual(party.spock.spark.device.mediaClusters.length, 0);
