@@ -31,7 +31,7 @@ module.exports = function(config) {
     basePath: '.',
 
     browserConsoleLogOptions: {
-      path: process.env.CIRCLE_ARTIFACTS ? path.join(process.env.CIRCLE_ARTIFACTS, `karma.${process.env.PACKAGE}.log`) : `karma.${process.env.PACKAGE}.log`,
+      path: `./reports/logs/karma.${process.env.PACKAGE}.log`,
       terminal: !process.env.CI
     },
 

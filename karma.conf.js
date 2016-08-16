@@ -21,7 +21,7 @@ module.exports = function(config) {
     basePath: '.',
 
     browserConsoleLogOptions: {
-      path: process.env.CIRCLE_ARTIFACTS ? path.join(process.env.CIRCLE_ARTIFACTS, 'karma.legacy.log') : 'karma.legacy.log',
+      path: './reports/logs/karma.legacy.log',
       terminal: !process.env.CI
     },
 
