@@ -199,6 +199,8 @@ assign(Socket.prototype, {
 
       this._socket.onerror = function onerror(event) {
         this.logger.warn('socket: error event fired', event);
+        this.logger.warn('socket: error event fired', event.reason);
+        this.logger.warn('socket: error event fired', event.code);
       }.bind(this);
 
     }.bind(this));
