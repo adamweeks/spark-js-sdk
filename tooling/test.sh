@@ -29,6 +29,14 @@ docker run ${DOCKER_RUN_OPTS} npm run build
 
 echo "RUNNING MODULE TESTS"
 
+
+set -x
+docker run -e PACKAGE=${PACKAGE} ${DOCKER_RUN_OPTS} bash -c "echo '1' > ${SDK_ROOT_DIR}/reports/proof"
+PIDS+=" $!"
+set +x
+
+
+
 PIDS=""
 # Ideally, the following would be done with lerna but there seem to be some bugs
 # in --scope and --ignore
@@ -54,18 +62,24 @@ for i in ${SDK_ROOT_DIR}/packages/*; do
 done
 
 echo "RUNNING LEGACY NODE TESTS"
+set -x
 docker run ${DOCKER_RUN_OPTS} bash -c "npm run test:legacy:node > ${SDK_ROOT_DIR}/reports/logs/legacy.node.log 2>&1" &
 PIDS+=" $!"
+set +x
 
 echo "RUNNING LEGACY BROWSER TESTS"
+set -x
 docker run -e PACKAGE=${legacy} ${DOCKER_RUN_OPTS} bash -c "npm run test:legacy:browser > ${SDK_ROOT_DIR}/reports/logs/legacy.browser.log 2>&1" &
 PIDS+=" $!"
+set +x
 
 FINAL_EXIT_CODE=0
 for P in $PIDS; do
   set +e
+  set -x
   wait $P
   EXIT_CODE=$?
+  set +x
   set -e
 
   if [ ${EXIT_CODE} -ne 0 ]; then
