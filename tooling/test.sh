@@ -48,24 +48,30 @@ for i in ${SDK_ROOT_DIR}/packages/*; do
   PACKAGE=$(echo $i | sed -e 's/.*packages\///g')
   # Note: using & instead of -d so that wait works
   set -x
-  docker run -e PACKAGE=${PACKAGE} ${DOCKER_RUN_OPTS} bash -c "npm run test:package:sauce > ${SDK_ROOT_DIR}/reports/logs/docker.${PACKAGE}.log 2>&1" &
+  docker run -e PACKAGE=${PACKAGE} ${DOCKER_RUN_OPTS} bash -c "npm run test:package:sauce > ../reports/logs/docker.${PACKAGE}.log 2>&1" &
   PIDS+=" $!"
   set +x
 done
 
 echo "RUNNING LEGACY NODE TESTS"
-docker run ${DOCKER_RUN_OPTS} bash -c "npm run test:legacy:node > ${SDK_ROOT_DIR}/reports/logs/legacy.node.log 2>&1" &
+set -x
+docker run ${DOCKER_RUN_OPTS} bash -c "npm run test:legacy:node > ../reports/logs/legacy.node.log 2>&1" &
 PIDS+=" $!"
+set +x
 
 echo "RUNNING LEGACY BROWSER TESTS"
-docker run -e PACKAGE=${legacy} ${DOCKER_RUN_OPTS} bash -c "npm run test:legacy:browser > ${SDK_ROOT_DIR}/reports/logs/legacy.browser.log 2>&1" &
+set -x
+docker run -e PACKAGE=${legacy} ${DOCKER_RUN_OPTS} bash -c "npm run test:legacy:browser > ../reports/logs/legacy.browser.log 2>&1" &
 PIDS+=" $!"
+set +x
 
 FINAL_EXIT_CODE=0
 for P in $PIDS; do
   set +e
+  set -x
   wait $P
   EXIT_CODE=$?
+  set +x
   set -e
 
   if [ ${EXIT_CODE} -ne 0 ]; then
