@@ -1,5 +1,7 @@
 FROM node:4
 
+apt-get update && apt-get install -y graphicsmagick
+
 ENV NPM_CONFIG_LOGLEVEL warn
 ENV NPM_CONFIG_REGISTRY=http://engci-maven-master.cisco.com/artifactory/api/npm/webex-npm-group
 

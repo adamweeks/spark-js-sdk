@@ -30,34 +30,34 @@ docker run ${DOCKER_RUN_OPTS} npm run build
 echo "RUNNING MODULE TESTS"
 
 PIDS=""
-# Ideally, the following would be done with lerna but there seem to be some bugs
-# in --scope and --ignore
-for i in ${SDK_ROOT_DIR}/packages/*; do
-  if ! echo $i | grep -qc -v test-helper ; then
-    continue
-  fi
-
-  if ! echo $i | grep -qc -v bin- ; then
-    continue
-  fi
-
-  if ! echo $i | grep -qc -v xunit-with-logs ; then
-    continue
-  fi
-
-  PACKAGE=$(echo $i | sed -e 's/.*packages\///g')
-  # Note: using & instead of -d so that wait works
-  set -x
-  docker run -e PACKAGE=${PACKAGE} ${DOCKER_RUN_OPTS} bash -c "npm run test:package:sauce > ${SDK_ROOT_DIR}/reports/logs/docker.${PACKAGE}.log 2>&1" &
-  PIDS+=" $!"
-  set +x
-done
-
-echo "RUNNING LEGACY NODE TESTS"
-set -x
-docker run ${DOCKER_RUN_OPTS} bash -c "npm run test:legacy:node > ${SDK_ROOT_DIR}/reports/logs/legacy.node.log 2>&1" &
-PIDS+=" $!"
-set +x
+# # Ideally, the following would be done with lerna but there seem to be some bugs
+# # in --scope and --ignore
+# for i in ${SDK_ROOT_DIR}/packages/*; do
+#   if ! echo $i | grep -qc -v test-helper ; then
+#     continue
+#   fi
+#
+#   if ! echo $i | grep -qc -v bin- ; then
+#     continue
+#   fi
+#
+#   if ! echo $i | grep -qc -v xunit-with-logs ; then
+#     continue
+#   fi
+#
+#   PACKAGE=$(echo $i | sed -e 's/.*packages\///g')
+#   # Note: using & instead of -d so that wait works
+#   set -x
+#   docker run -e PACKAGE=${PACKAGE} ${DOCKER_RUN_OPTS} bash -c "npm run test:package:sauce > ${SDK_ROOT_DIR}/reports/logs/docker.${PACKAGE}.log 2>&1" &
+#   PIDS+=" $!"
+#   set +x
+# done
+#
+# echo "RUNNING LEGACY NODE TESTS"
+# set -x
+# docker run ${DOCKER_RUN_OPTS} bash -c "npm run test:legacy:node > ${SDK_ROOT_DIR}/reports/logs/legacy.node.log 2>&1" &
+# PIDS+=" $!"
+# set +x
 
 echo "RUNNING LEGACY BROWSER TESTS"
 set -x
@@ -67,6 +67,8 @@ set +x
 
 FINAL_EXIT_CODE=0
 for P in $PIDS; do
+  echo "Waiting for $(jobs -p | wc -l) jobs to complete"
+
   set +e
   set -x
   wait $P
