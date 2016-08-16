@@ -199,6 +199,9 @@ assign(Socket.prototype, {
 
       this._socket.onerror = function onerror(event) {
         this.logger.warn('socket: error event fired', event);
+        if (process.env.NODE_ENV !== 'production') {
+          this.logger.warn.log(require('util').inspect(event, { depth: null }));
+        }
       }.bind(this);
 
     }.bind(this));
