@@ -60,8 +60,9 @@ for i in ${SDK_ROOT_DIR}/packages/*; do
   echo "# RUNNING ${PACKAGE} TESTS"
   echo "################################################################################"
   # Note: using & instead of -d so that wait works
+  # Note: the Dockerfile's default CMD will run package tests automatically
   set -x
-  docker run -e PACKAGE=${PACKAGE} ${DOCKER_RUN_OPTS} bash -c "npm run test:package:sauce > ${SDK_ROOT_DIR}/reports/logs/docker.${PACKAGE}.log 2>&1" &
+  docker run -e PACKAGE=${PACKAGE} ${DOCKER_RUN_OPTS} &
   PIDS+=" $!"
   set +x
 done
@@ -84,6 +85,11 @@ set +x
 
 FINAL_EXIT_CODE=0
 for P in $PIDS; do
+  echo "################################################################################"
+  echo "# Docker Stats"
+  echo "################################################################################"
+  docker stats --no-stream
+
   echo "################################################################################"
   echo "# Waiting for $(jobs -p | wc -l) jobs to complete"
   echo "################################################################################"
