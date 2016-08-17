@@ -120,6 +120,8 @@ export DOCKER_RUN_OPTS="${DOCKER_RUN_OPTS} -e NPM_CONFIG_CACHE=${WORKDIR}/.npm"
 export DOCKER_RUN_OPTS="${DOCKER_RUN_OPTS} --volumes-from ${HOSTNAME}"
 # Run commands as Jenkins user
 export DOCKER_RUN_OPTS="${DOCKER_RUN_OPTS} --user=$(id -u):$(id -g)"
+# Limit each container to 1GB of memory
+export DOCKER_RUN_OPTS="${DOCKER_RUN_OPTS} -m 1024m"
 # Use the computed container name
 export DOCKER_RUN_OPTS="${DOCKER_RUN_OPTS} ${DOCKER_CONTAINER_NAME}"
 
