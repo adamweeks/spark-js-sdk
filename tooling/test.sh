@@ -68,6 +68,8 @@ WORKDIR ${WORKDIR}
 USER $(id -u)
 EOT
 
+cat ./docker/builder/Dockerfile
+
 # Reset the Dockerfile to make sure we don't accidentally commit it later
 git checkout ./docker/builder/Dockerfile
 
