@@ -287,6 +287,23 @@ module.exports = function(grunt) {
       }
     },
 
+    xmlstrip: {
+      karma: {
+        files: [{
+          cwd: './reports/junit',
+          dest: '.',
+          expand: true,
+          src: '**/karma-legacy.xml'
+        }],
+        options: {
+          nodes: [
+            'testsuite.system-err',
+            'testsuite.system-out'
+          ]
+        }
+      }
+    },
+
     xunitDir: process.env.XUNIT_DIR || './reports/junit'
   });
 
@@ -421,6 +438,7 @@ module.exports = function(grunt) {
         tasks.push('karma:test');
         tasks.push('continue:off');
         tasks.push('fileExists:karmaxml');
+        tasks.push('xmlstrip:karma');
       }
       else {
         tasks.push(DEBUG ? 'karma:debug' : 'karma:test');
