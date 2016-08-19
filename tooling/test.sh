@@ -2,14 +2,46 @@
 
 set -e
 
+cd "${SDK_ROOT_DIR}"
+
 # Kill background tasks if the script exits early
 # single quotes are intentional
 # see http://stackoverflow.com/questions/360201/how-do-i-kill-background-processes-jobs-when-my-shell-script-exits
 # and https://wiki.jenkins-ci.org/display/JENKINS/Aborting+a+build
 trap 'JOBS=$(jobs -p); if [ -n "${JOBS}" ]; then kill "${JOBS}"; fi' SIGINT SIGTERM EXIT
 
-docker ps
-docker ps -a
+#
+# REMOVE REMNANT SAUCE FILES FROM PREVIOUS BUILD
+#
+
+rm -rf .sauce/*/sc.pid
+rm -rf .sauce/*/sc.tid
+rm -rf .sauce/*/sc.ready
+rm -rf .sauce/*/sauce_connect.log
+
+#
+# BUILD BUILDER
+#
+
+./tooling/build-docker-container.sh
+
+#
+# MAKE SECRETS AVAILABLE TO AUX CONTAINERS
+#
+
+# Remove secrets on exit
+trap "rm -f .env" EXIT
+
+cat <<EOF >.env
+COMMON_IDENTITY_CLIENT_SECRET=${CISCOSPARK_CLIENT_SECRET}
+CISCOSPARK_CLIENT_SECRET=${CISCOSPARK_CLIENT_SECRET}
+SAUCE_USERNAME=${SAUCE_USERNAME}
+SAUCE_ACCESS_KEY=${SAUCE_ACCESS_KEY}
+EOF
+
+#
+# BUILD AND TEST
+#
 
 echo "################################################################################"
 echo "# INSTALLING LEGACY DEPENDENCIES"
