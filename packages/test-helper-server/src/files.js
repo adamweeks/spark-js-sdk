@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var fs = require('fs');
 var mkdirp = require('mkdirp');
+var os = require('os');
 var path = require('path');
 var reflect = require('./reflect');
 var uuid = require('uuid');
@@ -25,7 +26,7 @@ router.patch('/reflect', reflect);
 router.post('/reflect', reflect);
 router.put('/reflect', reflect);
 
-var uploadPath = path.resolve('.tmp/files');
+var uploadPath = process.env.SPARK_JS_SDK_DOCKER_BUILDER ? path.resolve(os.tmpdir(), '/files') : path.resolve('.tmp/files');
 router.post('/upload', function(req, res, next) {
   mkdirp(uploadPath, function(err) {
     if (err) {
