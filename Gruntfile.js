@@ -5,6 +5,7 @@
 
 'use strict';
 
+var os = require('os');
 var path = require('path');
 
 module.exports = function(grunt) {
@@ -60,8 +61,8 @@ module.exports = function(grunt) {
       reports: 'reports',
       src: 'src',
       test: 'test',
-      tmp: '.tmp',
-      tmpUploads: '.tmp_uploads'
+      tmp: process.env.SPARK_JS_SDK_DOCKER_BUILDER ? path.resolve(os.tmpdir(), 'tmp') : '.tmp',
+      tmpUploads: process.env.SPARK_JS_SDK_DOCKER_BUILDER ? path.resolve(os.tmpdir(), 'uploads') : '.tmp_uploads'
     },
 
     connect: {
