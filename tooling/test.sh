@@ -25,22 +25,22 @@ docker run ${DOCKER_RUN_OPTS} npm run grunt:concurrent -- clean
 rm -rf ${SDK_ROOT_DIR}/reports
 mkdir -p ${SDK_ROOT_DIR}/reports/logs
 
-echo "################################################################################"
-echo "# BOOTSTRAPPING MODULES"
-echo "################################################################################"
-docker run ${DOCKER_RUN_OPTS} npm run bootstrap
-
-set +e
-echo "# Top Level Dependencies"
-npm ls --depth 0
-echo "# Package Dependencies"
-npm run lerna -- exec -- npm ls --depth 0
-set -e
-
-echo "################################################################################"
-echo "# BUILDING MODULES"
-echo "################################################################################"
-docker run ${DOCKER_RUN_OPTS} npm run build
+# echo "################################################################################"
+# echo "# BOOTSTRAPPING MODULES"
+# echo "################################################################################"
+# docker run ${DOCKER_RUN_OPTS} npm run bootstrap
+#
+# set +e
+# echo "# Top Level Dependencies"
+# npm ls --depth 0
+# echo "# Package Dependencies"
+# npm run lerna -- exec -- npm ls --depth 0
+# set -e
+#
+# echo "################################################################################"
+# echo "# BUILDING MODULES"
+# echo "################################################################################"
+# docker run ${DOCKER_RUN_OPTS} npm run build
 
 PIDS=""
 
@@ -56,50 +56,50 @@ echo "##########################################################################
 docker run -e PACKAGE=${legacy} ${DOCKER_RUN_OPTS} bash -c "npm run test:legacy:browser > ${SDK_ROOT_DIR}/reports/logs/legacy.browser.log 2>&1" &
 PIDS+=" $!"
 
-echo "################################################################################"
-echo "# RUNNING MODULE TESTS"
-echo "################################################################################"
-
-# Ideally, the following would be done with lerna but there seem to be some bugs
-# in --scope and --ignore
-for i in ${SDK_ROOT_DIR}/packages/*; do
-  if ! echo $i | grep -qc -v test-helper ; then
-    continue
-  fi
-
-  if ! echo $i | grep -qc -v bin- ; then
-    continue
-  fi
-
-  if ! echo $i | grep -qc -v xunit-with-logs ; then
-    continue
-  fi
-
-  echo "################################################################################"
-  echo "# Docker Stats"
-  echo "################################################################################"
-  docker stats --no-stream
-  docker ps
-
-  if [ "${CONCURRENCY}" != "" ]; then
-    echo "Keeping concurrent job count below ${CONCURRENCY}"
-    while [ $(jobs -p | wc -l) -gt ${CONCURRENCY} ]; do
-      echo "."
-      sleep 5
-    done
-  else
-    echo "Warning: CONCURRENCY limit not set; running all suites at once"
-  fi
-
-  PACKAGE=$(echo $i | sed -e 's/.*packages\///g')
-  echo "################################################################################"
-  echo "# RUNNING ${PACKAGE} TESTS"
-  echo "################################################################################"
-  # Note: using & instead of -d so that wait works
-  # Note: the Dockerfile's default CMD will run package tests automatically
-  docker run -e PACKAGE=${PACKAGE} ${DOCKER_RUN_OPTS} &
-  PIDS+=" $!"
-done
+# echo "################################################################################"
+# echo "# RUNNING MODULE TESTS"
+# echo "################################################################################"
+#
+# # Ideally, the following would be done with lerna but there seem to be some bugs
+# # in --scope and --ignore
+# for i in ${SDK_ROOT_DIR}/packages/*; do
+#   if ! echo $i | grep -qc -v test-helper ; then
+#     continue
+#   fi
+#
+#   if ! echo $i | grep -qc -v bin- ; then
+#     continue
+#   fi
+#
+#   if ! echo $i | grep -qc -v xunit-with-logs ; then
+#     continue
+#   fi
+#
+#   echo "################################################################################"
+#   echo "# Docker Stats"
+#   echo "################################################################################"
+#   docker stats --no-stream
+#   docker ps
+#
+#   if [ "${CONCURRENCY}" != "" ]; then
+#     echo "Keeping concurrent job count below ${CONCURRENCY}"
+#     while [ $(jobs -p | wc -l) -gt ${CONCURRENCY} ]; do
+#       echo "."
+#       sleep 5
+#     done
+#   else
+#     echo "Warning: CONCURRENCY limit not set; running all suites at once"
+#   fi
+#
+#   PACKAGE=$(echo $i | sed -e 's/.*packages\///g')
+#   echo "################################################################################"
+#   echo "# RUNNING ${PACKAGE} TESTS"
+#   echo "################################################################################"
+#   # Note: using & instead of -d so that wait works
+#   # Note: the Dockerfile's default CMD will run package tests automatically
+#   docker run -e PACKAGE=${PACKAGE} ${DOCKER_RUN_OPTS} &
+#   PIDS+=" $!"
+# done
 
 FINAL_EXIT_CODE=0
 for P in $PIDS; do
