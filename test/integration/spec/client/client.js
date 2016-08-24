@@ -171,7 +171,7 @@ describe('Client', function() {
       return req;
     });
 
-    skipInNode(it)('emits upload progress events', function() {
+    it.only('emits upload progress events', function() {
       var fixtures = {
         fixture: 'sample-image-small-one.png'
       };
