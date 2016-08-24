@@ -173,7 +173,7 @@ describe('Client', function() {
 
     skipInNode(it)('emits upload progress events', function() {
       var fixtures = {
-        fixture: 'sample-image-small-one.png'
+        fixture: 'sample-image-small-two.png'
       };
 
       return fh2.fetchFixtures(fixtures)

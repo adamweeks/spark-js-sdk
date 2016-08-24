@@ -79,6 +79,7 @@ for i in ${SDK_ROOT_DIR}/packages/*; do
   echo "# Docker Stats"
   echo "################################################################################"
   docker stats --no-stream
+  docker ps
 
   if [ "${CONCURRENCY}" != "" ]; then
     echo "Keeping concurrent job count below ${CONCURRENCY}"
@@ -106,6 +107,7 @@ for P in $PIDS; do
   echo "# Docker Stats"
   echo "################################################################################"
   docker stats --no-stream
+  docker ps
 
   echo "################################################################################"
   echo "# Waiting for $(jobs -p | wc -l) jobs to complete"
