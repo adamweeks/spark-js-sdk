@@ -130,14 +130,24 @@ describe(`Encryption`, function() {
 
       afterEach(() => spy.restore());
 
-      it(`handles late ecdhe responses`, () => assert.isFulfilled(spark.encryption.kms.ping())
-        .then(() => {
-          // callCount should be at least 3:
-          // 1 for the initial ping message
-          // 1 when the ecdh key gets renegotiated
-          // 1 when the pings gets sent again
-          assert.isAbove(spy.callCount, 2, `If this test fails, we've made previously-assumed-to-be-impossible performance gains in cloudaps; please update this test accordingly.`);
-        }));
+      it(`handles late ecdhe responses`, () => {
+        const start = Date.now();
+        return assert.isFulfilled(spark.encryption.kms.ping())
+          .then(() => {
+            // eslint-disable-next-line
+            console.log(`######`, Date.now() - start)
+            // callCount should be at least 3:
+            // 1 for the initial ping message
+            // 1 when the ecdh key gets renegotiated
+            // 1 when the pings gets sent again
+            assert.isAbove(spy.callCount, 2, `If this test fails, we've made previously-assumed-to-be-impossible performance gains in cloudaps; please update this test accordingly.`);
+          })
+          .catch((reason) => {
+            // eslint-disable-next-line
+            console.log(require('util').inspect(spy.args, { depth: null }));
+            throw reason;
+          });
+      });
     });
 
     describe(`when the kms is in another org`, () => {
