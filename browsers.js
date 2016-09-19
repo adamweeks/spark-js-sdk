@@ -9,55 +9,23 @@ module.exports = {
 
   sauce: {
     // Reminder: the first item in this object is used by pipeline builds
-    sl_chrome_45_osx9: {
+    sl_chrome_latest_osx11: {
       base: 'SauceLabs',
-      platform: 'OS X 10.9',
+      platform: 'OS X 10.11',
       browserName: 'chrome',
-      version: '45'
+      version: 'latest'
     },
-    sl_firefox_40_osx9: {
-      base: 'SauceLabs',
-      platform: 'OS X 10.9',
-      browserName: 'firefox',
-      version: '40'
-    },
-    // FIXME Safari 8 still makes the test suite run too slowly
-    // sl_safari_8_osx10: {
-    //   base: 'SauceLabs',
-    //   platform: 'OS X 10.10',
-    //   browserName: 'safari',
-    //   version: '8'
-    // },
-    // FIXME spec/client/device.js makes IE run really slowly
-    // sl_ie_10_win7: {
-    //   base: 'SauceLabs',
-    //   platform: 'Windows 7',
-    //   browserName: 'internet explorer',
-    //   version: '10'
-    // },
-    // sl_ie_11_win7: {
-    //   base: 'SauceLabs',
-    //   platform: 'Windows 7',
-    //   browserName: 'internet explorer',
-    //   version: '11'
-    // },
-    sl_chrome_46_win7: {
+    sl_chrome_latest_win7: {
       base: 'SauceLabs',
       platform: 'Windows 7',
       browserName: 'chrome',
-      version: '46'
+      version: 'latest'
     },
-    sl_firefox_41_win7: {
+    sl_firefox_latest_win7: {
       base: 'SauceLabs',
       platform: 'Windows 7',
       browserName: 'firefox',
-      version: '41'
-    },
-    sl_firefox_41_linux: {
-      base: 'SauceLabs',
-      platform: 'Linux',
-      browserName: 'firefox',
-      version: 41
+      version: 'latest'
     }
   }
 };
