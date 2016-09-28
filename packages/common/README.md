@@ -116,6 +116,17 @@ Returns **Defer**
 
 # make-state-datatype
 
+!
+
+Copyright (c) 2015-2016 Cisco Systems, Inc. See LICENSE file.
+
+**Parameters**
+
+-   `Constructor`  
+-   `name`  
+
+# make-state-datatype
+
 Creates an ampersand state object that wires its event handlers like a an
 ampersand child
 
@@ -125,17 +136,6 @@ ampersand child
 -   `name` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
 Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
-
-# make-state-datatype
-
-!
-
-Copyright (c) 2015-2016 Cisco Systems, Inc. See LICENSE file.
-
-**Parameters**
-
--   `Constructor`  
--   `name`  
 
 # test
 
@@ -381,16 +381,6 @@ Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Ref
 
 # tap
 
-!
-
-Copyright (c) 2015-2016 Cisco Systems, Inc. See LICENSE file.
-
-**Parameters**
-
--   `fn`  
-
-# tap
-
 Injects code into a promise chain without modifying the promise chain's result
 
 **Parameters**
@@ -410,3 +400,24 @@ f()
 ```
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** 
+
+# tap
+
+!
+
+Copyright (c) 2015-2016 Cisco Systems, Inc. See LICENSE file.
+
+**Parameters**
+
+-   `fn`  
+
+# while-in-flight
+
+While the promise returned by the decorated is unfullfilled, sets, the
+specified boolean on the target class to `true`
+
+**Parameters**
+
+-   `param` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** 
