@@ -8,7 +8,7 @@ describe('Services', function() {
   describe('Conversation', function() {
     describe('ShareActivity', function() {
       describe('#_processImage()', function() {
-        this.timeout(10000);
+        this.timeout(30000);
         var fixtures = {
           png: 'sample-image-small-one.png',
           txt: 'sample-text-one.txt'

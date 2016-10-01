@@ -141,7 +141,7 @@ describe('Client', function() {
 
       describe('when `maxRetries` is set', function() {
         it('fails after `maxRetries` attempts', function() {
-          this.timeout(10000);
+          this.timeout(30000);
           mercury.config.maxRetries = 2;
           socketOpenStub.returns(Promise.reject(new Socket.ConnectionError()));
           assert.notCalled(socket.open);
@@ -153,7 +153,7 @@ describe('Client', function() {
       });
 
       describe('when the connection fails', function() {
-        this.timeout(20000);
+        this.timeout(30000);
 
         it('backs off exponentially', function() {
           socketOpenStub.returns(Promise.reject(new Socket.ConnectionError()));
@@ -274,7 +274,7 @@ describe('Client', function() {
 
       describe('when there is a connection attempt inflight', function() {
         it('stops the attempt', function() {
-          this.timeout(10000);
+          this.timeout(30000);
           socketOpenStub.returns(Promise.reject(new Socket.ConnectionError()));
           var promise = mercury.connect();
           return delay(1000)
@@ -322,7 +322,7 @@ describe('Client', function() {
 
       describe('when the connection fails', function() {
         it('backs off exponentially', function() {
-          this.timeout(10000);
+          this.timeout(30000);
           socketOpenStub.returns(Promise.reject(new Socket.ConnectionError()));
           // Note: onCall is zero-based
           socketOpenStub.onCall(2).returns(Promise.resolve(new MockSocket()));
@@ -345,7 +345,7 @@ describe('Client', function() {
 
         describe('with Socket.AuthorizationError', function() {
           it('refreshes the access token, reregisters the device, and reconnects to Mercury', function() {
-            this.timeout(10000);
+            this.timeout(30000);
             socketOpenStub.returns(Promise.reject(new Socket.AuthorizationError()));
             socketOpenStub.onCall(2).returns(Promise.resolve(new MockSocket()));
             return mercury._reconnect()

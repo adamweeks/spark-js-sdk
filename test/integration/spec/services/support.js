@@ -7,7 +7,7 @@ var landingparty = require('../../lib/landingparty');
 describe('Service', function() {
   describe('Support', function() {
     describe('#submitCallLogs()', function() {
-      this.timeout(20000);
+      this.timeout(30000);
       var fixtures = {
         sampleTextOne: 'sample-text-one.txt'
       };
@@ -31,7 +31,7 @@ describe('Service', function() {
     });
 
     describe('#submitCallLogsForUnAuthUser()', function() {
-      this.timeout(20000);
+      this.timeout(30000);
       var fixtures = {
         sampleTextOne: 'sample-text-one.txt'
       };

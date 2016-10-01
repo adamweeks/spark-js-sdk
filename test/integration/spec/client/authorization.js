@@ -11,7 +11,7 @@ var landingparty = require('../../lib/landingparty');
 describe('Client', function() {
   describe('Credentials', function() {
     describe('Authorization', function() {
-      this.timeout(20000);
+      this.timeout(30000);
 
       var party = {
         spock: true

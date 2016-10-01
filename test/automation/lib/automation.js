@@ -36,7 +36,7 @@ function requireDir(basePath) {
 }
 
 after(function deleteTestUsers() {
-  this.timeout(20000);
+  this.timeout(30000);
   return landingparty.beamUp();
 });
 
@@ -73,7 +73,7 @@ var automation = {
     }
 
     return browser.init(browserDef)
-      .setImplicitWaitTimeout(10000)
+      .setImplicitWaitTimeout(30000)
         .then(function() {
           return browser;
         });
